@@ -12,27 +12,13 @@ from np.flight import Server  # Adjust import path as needed
 class TestServer(Server):
     def f(self, matrices):
         # Simple implementation for testing - just return the input as a table
-        return pa.Table.from_arrays([pa.array(matrices)], names=["result"])
+        return matrices
 
 
 @pytest.fixture(scope="module")
 def server():
     """Fixture providing a test server instance."""
     return TestServer(host="localhost", port=5008, logger=logger)
-
-
-# def test_server_initialization_with_default_logger():
-#    """Test server initialization with default logger."""
-#    server = TestServer("localhost", 5010)
-#    assert server.logger == logger
-#    assert server._storage == {}
-
-
-# def test_server_initialization_with_custom_logger():
-#    """Test server initialization with custom logger."""
-#    custom_logger = Mock()
-#    server = TestServer("localhost", 5009, logger=custom_logger)
-#    assert server.logger == custom_logger
 
 
 @pytest.mark.parametrize("test_command", ["test_command1", "test_command2", "complex/command/path", "123456"])

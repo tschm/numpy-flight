@@ -2,9 +2,10 @@ import threading  # Module for creating and managing threads; used for thread sa
 from abc import ABC, abstractmethod
 
 import loguru  # Logging library that simplifies logging setup and usage.
+import numpy as np
 import pyarrow.flight as fl  # PyArrow's Flight module to handle gRPC-based data transfer with Arrow.
 
-from .utils.alter import pa_2_np
+from .utils.alter import np_2_pa, pa_2_np
 
 
 class Server(fl.FlightServerBase, ABC):
@@ -90,7 +91,9 @@ class Server(fl.FlightServerBase, ABC):
         matrices = pa_2_np(table)
 
         # Compute results (e.g., perform computations based on matrices)
-        result_table = self.f(matrices)
+        np_data = self.f(matrices)
+        result_table = np_2_pa(np_data)
+
         self.logger.info(result_table.schema.names)
         self.logger.info("Computation completed. Returning results.")
 
@@ -112,4 +115,4 @@ class Server(fl.FlightServerBase, ABC):
         server.serve()  # Start the server to handle incoming requests.
 
     @abstractmethod
-    def f(self, matrices): ...  # pragma: no cover
+    def f(self, matrices: dict[str, np.ndarray]) -> dict[str, np.ndarray]: ...  # pragma: no cover
