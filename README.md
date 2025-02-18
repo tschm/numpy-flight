@@ -1,17 +1,27 @@
-# [Numpy with Apache Arrow Flight](https://tschm.github.io/numpy-client/book)
+# [Numpy with Apache Arrow Flight](https://tschm.github.io/numpy-flight/book)
 
-[![PyPI version](https://badge.fury.io/py/numpy-client.svg)](https://badge.fury.io/py/numpy-client)
+[![PyPI version](https://badge.fury.io/py/numpy-flight.svg)](https://badge.fury.io/py/numpy-flight)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
-[![CI](https://github.com/tschm/numpy-client/actions/workflows/ci.yml/badge.svg)](https://github.com/tschm/numpy-client/actions/workflows/ci.yml)
-[![Coverage Status](https://coveralls.io/repos/github/tschm/numpy-client/badge.svg?branch=main)](https://coveralls.io/github/tschm/numpy-client?branch=main)
+[![CI](https://github.com/tschm/numpy-flight/actions/workflows/ci.yml/badge.svg)](https://github.com/tschm/numpy-flight/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/tschm/numpy-flight/badge.svg?branch=main)](https://coveralls.io/github/tschm/numpy-flight?branch=main)
 [![Created with qCradle](https://img.shields.io/badge/Created%20with-qCradle-blue?style=flat-square)](https://github.com/tschm/package)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/tschm/numpy-client)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/tschm/numpy-flight)
 
-A Python client for efficiently transferring NumPy arrays over Apache Arrow Flight.
-This client provides a simple interface for sending NumPy arrays to a Flight server,
+## A Problem
+
+We provide
+
+- An abstract base class for an Apache flight server
+- A client class to communicate with such servers
+  
+We efficiently transfer NumPy arrays over Apache Arrow Flight using a custom Client. 
+The client provides a simple interface for sending NumPy arrays,
 performing computations, and retrieving results, all while handling
-the serialization and deserialization automatically.
+the serialization and deserialization automatically in the background.
+
+To create a server we expect the user to overload a function performing
+the calcutation based on a dictionary of numpy arrays.
 
 ## Features
 
@@ -26,7 +36,7 @@ the serialization and deserialization automatically.
 You can install this client via
 
 ```bash
-pip install numpy-flight-client
+pip install numpy-flight
 ```
 
 ## Usage
@@ -36,7 +46,7 @@ pip install numpy-flight-client
 ```python
 import numpy as np
 import pyarrow.flight as fl
-from np.client import Client
+from np.flight import Client
 
 # Initialize the Flight client
 flight_client = fl.FlightClient('grpc://localhost:8815')
