@@ -1,5 +1,5 @@
 [project]
-name = 'numpy-flight-client'
+name = 'numpy-flight'
 version = "0.0.0"
 description = "A little client for applications driven by numpy"
 # Please add authors and correct the email...
@@ -7,13 +7,14 @@ authors = [{name='Thomas Schmelzer', email= 'thomas.schmelzer@gmail.com'}]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "loguru>=0.7.3",
     "numpy>=2.2.3",
     #"pyarrow[flight]>=19.0.0"
-    "pyarrow>=19.0.0"
+    "pyarrow>=19.0.0",
 ]
 
 [project.urls]
-repository = "https://github.com/tschm/numpy-client"
+repository = "https://github.com/tschm/numpy-flight"
 
 [dependency-groups]
 dev = [

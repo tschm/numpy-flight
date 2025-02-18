@@ -3,8 +3,8 @@ import pyarrow as pa
 import pyarrow.flight as fl
 import pytest
 
-from np.client import Client  # Adjust import path as needed
-from np.client.utils.alter import np_2_pa, pa_2_np
+from np.flight import Client  # Adjust import path as needed
+from np.flight.utils.alter import np_2_pa, pa_2_np
 
 
 @pytest.fixture
@@ -20,27 +20,9 @@ def numpy_client(flight_client):
     """
     Create a NumpyClient instance with a mock Flight client.
     """
-    return Client(flight_client)
-
-
-@pytest.fixture
-def test_data():
-    """
-    Create sample test data as a dictionary of NumPy arrays.
-    """
-    return {"values": np.array([1, 2, 3, 4, 5]), "labels": np.array(["a", "b", "c", "d", "e"])}
-
-
-@pytest.fixture
-def test_table():
-    """
-    Create a sample Arrow table for testing.
-    """
-    arrays = [
-        pa.array([{"data": [1, 2, 3, 4, 5], "shape": [5]}]),
-        pa.array([{"data": ["a", "b", "c", "d", "e"], "shape": [5]}]),
-    ]
-    return pa.Table.from_arrays(arrays, names=["values", "labels"])
+    client = Client(flight_client)
+    yield client
+    client.close()
 
 
 def test_descriptor_creation():
