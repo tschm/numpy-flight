@@ -23,10 +23,10 @@ the serialization and deserialization automatically.
 
 ## Installation
 
-To use this client, you'll need to install the required dependencies:
+You can install this client via
 
 ```bash
-pip install numpy pyarrow
+pip install numpy-client
 ```
 
 ## Usage
@@ -117,7 +117,7 @@ The client includes proper error handling for common scenarios:
 - Always close the Flight client when done:
 
 ```python
-flight_client.close()
+client.close()
 ```
 
 - Use context managers when possible to ensure proper cleanup:
@@ -129,11 +129,6 @@ with flight.FlightClient('grpc://localhost:8815') as flight_client:
 ```
 
 - Handle large datasets in chunks to manage memory usage effectively.
-
-## Dependencies
-
-- NumPy
-- PyArrow (with Flight support)
 
 ### **Set Up Environment**
 
@@ -149,26 +144,6 @@ For adding or removing packages:
 ```bash
 uv add/remove requests  # for main dependencies
 uv add/remove requests --dev  # for dev dependencies
-```
-
-### **Configure Pre-commit Hooks**
-
-```bash
-make fmt
-```
-
-Installs hooks to maintain code quality and formatting.
-
-### **Update Project Info**
-
-- Edit `pyproject.toml` to update authors and email addresses
-- Configure GitHub Pages (branch: gh-pages) in repository settings
-
-## Development Commands
-
-```bash
-make tests   # Run test suite
-make marimo  # Start Marimo notebooks
 ```
 
 ## Contributing
