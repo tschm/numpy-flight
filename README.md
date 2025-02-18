@@ -14,8 +14,8 @@ We provide
 
 - An abstract base class for an Apache flight server
 - A client class to communicate with such servers
-  
-We efficiently transfer NumPy arrays over Apache Arrow Flight using a custom Client. 
+
+We efficiently transfer NumPy arrays over Apache Arrow Flight using a custom Client.
 The client provides a simple interface for sending NumPy arrays,
 performing computations, and retrieving results, all while handling
 the serialization and deserialization automatically in the background.
