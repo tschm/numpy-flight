@@ -39,6 +39,9 @@ def np_2_pa(data: Dict[str, np.ndarray]) -> pa.Table:
     """
 
     def _f(value: np.ndarray) -> pa.Array:
+        # if value is None:
+        #    raise TypeError("Value cannot be None")
+
         arr = np.asarray(value)
 
         # Create a dictionary with the flattened data and shape
@@ -46,7 +49,7 @@ def np_2_pa(data: Dict[str, np.ndarray]) -> pa.Table:
 
         return pa.array([arr_dict])
 
-    return pa.Table.from_pydict({key: _f(value) for key, value in data.items()})
+    return pa.Table.from_pydict({key: _f(value) for key, value in data.items() if value is not None})
 
 
 def pa_2_np(table: pa.Table) -> dict[str, np.ndarray]:
