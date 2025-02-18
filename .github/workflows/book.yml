@@ -28,7 +28,7 @@ jobs:
 
       - uses: cvxgrp/.github/actions/pdoc@v2.1.1
         with:
-          source-folder: src/numpy-client
+          source-folder: src/np
 
 
   test:
@@ -40,7 +40,7 @@ jobs:
       - uses: cvxgrp/.github/actions/coverage@v2.2.1
         with:
           tests-folder: src/tests
-          source-folder: src/numpy-client
+          source-folder: src/np
           coveralls: 'false'
 
   jupyter:
