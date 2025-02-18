@@ -3,7 +3,7 @@ name = 'numpy-client'
 version = "0.0.0"
 description = "A little client for applications driven by numpy"
 # Please add authors and correct the email...
-authors = [{name='tschm', email= 'tschm@mailinator.com'}]
+authors = [{name='Thomas Schmelzer', email= 'thomas.schmelzer@gmail.com'}]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -19,6 +19,7 @@ dev = [
     "pre-commit>=4.1.0",
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
 ]
 
 [tool.ruff]
