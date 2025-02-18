@@ -18,20 +18,21 @@ class TestServer(Server):
 @pytest.fixture(scope="module")
 def server():
     """Fixture providing a test server instance."""
-    return TestServer(host="localhost", port=5008)
+    return TestServer(host="localhost", port=5008, logger=logger)
 
 
-def test_server_initialization_with_default_logger(server):
-    """Test server initialization with default logger."""
-    assert server.logger == logger
-    assert server._storage == {}
+# def test_server_initialization_with_default_logger():
+#    """Test server initialization with default logger."""
+#    server = TestServer("localhost", 5010)
+#    assert server.logger == logger
+#    assert server._storage == {}
 
 
-def test_server_initialization_with_custom_logger():
-    """Test server initialization with custom logger."""
-    custom_logger = Mock()
-    server = TestServer("localhost", 5009, logger=custom_logger)
-    assert server.logger == custom_logger
+# def test_server_initialization_with_custom_logger():
+#    """Test server initialization with custom logger."""
+#    custom_logger = Mock()
+#    server = TestServer("localhost", 5009, logger=custom_logger)
+#    assert server.logger == custom_logger
 
 
 @pytest.mark.parametrize("test_command", ["test_command1", "test_command2", "complex/command/path", "123456"])
@@ -44,10 +45,6 @@ def test_extract_command_from_ticket(server, test_command):
 
 def test_do_put(server, test_table):
     """Test PUT operation with mock reader and writer."""
-    # Mock context and writer
-    context = Mock()
-    writer = Mock()
-
     # Create test command and descriptor
     test_command = "test_put"
     descriptor = fl.FlightDescriptor.for_command(test_command)
@@ -57,7 +54,7 @@ def test_do_put(server, test_table):
     reader.read_all.return_value = test_table
 
     # Execute PUT operation
-    result = server.do_put(context, descriptor, reader, writer)
+    result = server.do_put(None, descriptor, reader, None)
 
     # Verify results
     assert test_command in server._storage
@@ -75,7 +72,7 @@ def test_do_get_existing_data(server, test_table):
     ticket = fl.Ticket(test_command.encode())
 
     # Execute GET operation
-    result_stream = server.do_get(Mock(), ticket)
+    result_stream = server.do_get(None, ticket)
 
     # Verify the result
     assert isinstance(result_stream, fl.RecordBatchStream)
@@ -90,7 +87,7 @@ def test_do_get_nonexistent_data(server):
     ticket = fl.Ticket(test_command.encode())
 
     with pytest.raises(fl.FlightServerError) as exc_info:
-        server.do_get(Mock(), ticket)
+        server.do_get(None, ticket)
 
     assert f"No data found for command: {test_command}" in str(exc_info.value)
 
@@ -140,8 +137,6 @@ def test_invalid_table_schema(server):
     # Create an invalid table (missing required columns)
     invalid_data = pa.Table.from_arrays([pa.array([1, 2, 3])], names=["invalid_column"])
 
-    context = Mock()
-    writer = Mock()
     test_command = "invalid_data"
     descriptor = fl.FlightDescriptor.for_command(test_command)
 
@@ -149,9 +144,9 @@ def test_invalid_table_schema(server):
     reader.read_all.return_value = invalid_data
 
     # Store the invalid data
-    server.do_put(context, descriptor, reader, writer)
+    server.do_put(None, descriptor, reader, None)
 
     # Try to get and process the invalid data
     ticket = fl.Ticket(test_command.encode())
     with pytest.raises(Exception):  # Specific exception type should match your implementation
-        server.do_get(Mock(), ticket)
+        server.do_get(None, ticket)

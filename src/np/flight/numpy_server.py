@@ -95,8 +95,7 @@ class Server(fl.FlightServerBase, ABC):
         self.logger.info("Computation completed. Returning results.")
 
         # Create and return a RecordBatchStream with the result
-        stream = fl.RecordBatchStream(result_table)
-        return stream
+        return fl.RecordBatchStream(result_table)
 
     @classmethod
     def start(cls, host="127.0.0.1", port=5008, logger=None, **kwargs):  # pragma: no cover
