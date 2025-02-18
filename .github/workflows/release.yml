@@ -1,0 +1,39 @@
+name: Bump version and publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tag:
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate Tag
+        uses: cvxgrp/.github/actions/tag@v2.2.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    needs: tag
+    runs-on: ubuntu-latest
+    environment: release
+
+    permissions:
+      contents: read
+      # This permission is required for trusted publishing.
+      id-token: write
+
+    steps:
+      - name: Checkout [${{ github.repository }}]
+        uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

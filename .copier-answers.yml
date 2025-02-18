@@ -1,0 +1,11 @@
+_commit: v0.4.58
+_src_path: git@github.com:tschm/package.git
+description: A little client for applications driven by numpy
+gh_create: gh repo create tschm/numpy-client --public --description 'A little client
+  for applications driven by numpy'
+page: https://tschm.github.io/numpy-client
+project_name: numpy-client
+repository: https://github.com/tschm/numpy-client
+ssh_uri: git@github.com:tschm/numpy-client.git
+status: public
+username: tschm

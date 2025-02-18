@@ -1,0 +1,64 @@
+name: "book"
+
+on:
+- push
+
+
+permissions:
+    checks: write
+    contents: read
+
+jobs:
+
+  marimo:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Build the virtual environment"
+        uses: cvxgrp/.github/actions/environment@v2.2.1
+
+      - uses: cvxgrp/.github/actions/marimo@v2.2.1
+        with:
+          source_folder: book/marimo
+
+  pdoc:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Build the virtual environment"
+        uses: cvxgrp/.github/actions/environment@v2.2.1
+
+      - uses: cvxgrp/.github/actions/pdoc@v2.1.1
+        with:
+          source-folder: src/numpy-client
+
+
+  test:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Build the virtual environment"
+        uses: cvxgrp/.github/actions/environment@v2.2.1
+
+      - uses: cvxgrp/.github/actions/coverage@v2.2.1
+        with:
+          tests-folder: src/tests
+          source-folder: src/numpy-client
+          coveralls: 'false'
+
+  jupyter:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Build the virtual environment"
+        uses: cvxgrp/.github/actions/environment@v2.2.1
+
+      - uses: cvxgrp/.github/actions/jupyter@v2.2.1
+
+  book:
+    runs-on: "ubuntu-latest"
+    needs: [test, pdoc, jupyter, marimo]
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Upload the book
+        if: ${{ env.ACT != 'true' }}  # Skip if running with 'act'
+        uses: cvxgrp/.github/actions/book@v2.2.1
