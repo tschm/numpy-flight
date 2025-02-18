@@ -1,5 +1,5 @@
 [project]
-name = 'numpy-client'
+name = 'numpy-flight-client'
 version = "0.0.0"
 description = "A little client for applications driven by numpy"
 # Please add authors and correct the email...

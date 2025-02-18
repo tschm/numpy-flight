@@ -26,7 +26,7 @@ the serialization and deserialization automatically.
 You can install this client via
 
 ```bash
-pip install numpy-client
+pip install numpy-flight-client
 ```
 
 ## Usage
@@ -35,11 +35,11 @@ pip install numpy-client
 
 ```python
 import numpy as np
-from pyarrow import flight
+import pyarrow.flight as fl
 from np.client import Client
 
 # Initialize the Flight client
-flight_client = flight.FlightClient('grpc://localhost:8815')
+flight_client = fl.FlightClient('grpc://localhost:8815')
 client = Client(flight_client)
 ```
 
