@@ -16,13 +16,28 @@ def flight_client(mocker):
 
 
 @pytest.fixture
-def numpy_client(flight_client):
+def numpy_client(mocker, flight_client):
     """
     Create a NumpyClient instance with a mock Flight client.
     """
-    client = Client(flight_client)
-    yield client
-    client.close()
+    mock_fl_connect = mocker.patch("pyarrow.flight.connect")  # Replace with the actual module path
+    # mock_client = MagicMock()
+    mock_fl_connect.return_value = flight_client
+
+    location = "some_location"
+    kwargs = {"key": "value"}
+
+    # Act
+    numpy_client = Client(location, **kwargs)
+
+    # Assert
+    mock_fl_connect.assert_called_once_with(location, **kwargs)
+    assert numpy_client.flight == flight_client
+    return numpy_client
+
+
+def test_numpy_client_init(numpy_client, flight_client):
+    assert numpy_client.flight == flight_client
 
 
 def test_descriptor_creation():
@@ -40,11 +55,12 @@ def test_np_2_pa(test_data, test_table):
     assert np.array_equal(pa_2_np(test_table)["labels"], test_data["labels"])
 
 
-def test_write_operation(numpy_client, flight_client, test_data, test_table, mocker):
+def test_write_operation(numpy_client, test_data, test_table, mocker):
     """Test the write operation with mock Flight client."""
     # Set up mock writer using pytest-mock
     mock_writer = mocker.create_autospec(fl.FlightStreamWriter)
-    flight_client.do_put.return_value = (mock_writer, None)
+    numpy_client.flight.do_put.return_value = (mock_writer, None)
+    # flight_client.do_put.return_value = (mock_writer, None)
 
     # Spy on np_2_pa to capture the converted table
     # np_2_pa_spy = mocker.spy(numpy_client.np_2_pa, '__call__')
@@ -53,18 +69,18 @@ def test_write_operation(numpy_client, flight_client, test_data, test_table, moc
     numpy_client.write("test_write", test_data)
 
     # Verify interactions
-    flight_client.do_put.assert_called_once()
+    numpy_client.flight.do_put.assert_called_once()
     mock_writer.write_table.assert_called_once()
     assert mock_writer.write_table.call_args.args[0].equals(test_table)
     mock_writer.close.assert_called_once()
 
 
-def test_write_handles_errors(numpy_client, flight_client, test_data, mocker):
+def test_write_handles_errors(numpy_client, test_data, mocker):
     """Test that write operation properly handles errors."""
     # Set up mock writer that raises an error
     mock_writer = mocker.create_autospec(fl.FlightStreamWriter)
     mock_writer.write_table.side_effect = fl.FlightError("Test error")
-    flight_client.do_put.return_value = (mock_writer, None)
+    numpy_client.flight.do_put.return_value = (mock_writer, None)
 
     # Verify error handling
     with pytest.raises(fl.FlightError):
@@ -74,33 +90,33 @@ def test_write_handles_errors(numpy_client, flight_client, test_data, mocker):
     mock_writer.close.assert_called_once()
 
 
-def test_get_operation(numpy_client, flight_client, test_table, mocker):
+def test_get_operation(numpy_client, test_table, mocker):
     """Test the get operation with mock Flight client."""
     # Set up mock reader using pytest-mock
     mock_reader = mocker.create_autospec(fl.FlightStreamReader)
     mock_reader.read_all.return_value = test_table
-    flight_client.do_get.return_value = mock_reader
+    numpy_client.flight.do_get.return_value = mock_reader
 
     # Perform get operation
     result = numpy_client.get("test_get")
 
     # Verify interactions and result
-    flight_client.do_get.assert_called_once()
+    numpy_client.flight.do_get.assert_called_once()
     mock_reader.read_all.assert_called_once()
     assert isinstance(result, pa.Table)
     assert result.schema == test_table.schema
     assert result.equals(test_table)
 
 
-def test_compute_operation(numpy_client, flight_client, test_data, test_table, mocker):
+def test_compute_operation(numpy_client, test_data, test_table, mocker):
     """Test the compute operation (combination of write and get)."""
     # Set up mocks for both write and get operations
     mock_writer = mocker.create_autospec(fl.FlightStreamWriter)
-    flight_client.do_put.return_value = (mock_writer, None)
+    numpy_client.flight.do_put.return_value = (mock_writer, None)
 
     mock_reader = mocker.create_autospec(fl.FlightStreamReader)
     mock_reader.read_all.return_value = test_table
-    flight_client.do_get.return_value = mock_reader
+    numpy_client.flight.do_get.return_value = mock_reader
 
     # Perform compute operation
     print(test_data)
@@ -145,34 +161,34 @@ def test_descriptor_with_different_commands(command, expected_encoded):
         # ({"values": np.array([]), "labels": None}, TypeError),
     ],
 )
-def test_write_with_invalid_inputs(numpy_client, flight_client, data, expected_error, mocker):
+def test_write_with_invalid_inputs(numpy_client, data, expected_error, mocker):
     """Test write operation with various invalid inputs."""
     with pytest.raises(expected_error):
         mock_writer = mocker.create_autospec(fl.FlightStreamWriter)
-        flight_client.do_put.return_value = (mock_writer, None)
+        numpy_client.flight.do_put.return_value = (mock_writer, None)
 
         numpy_client.write("test", data)
 
 
-def test_large_data_handling(numpy_client, flight_client, mocker):
+def test_large_data_handling(numpy_client, mocker):
     """Test handling of large data arrays."""
     large_data = {"values": np.arange(1000000, dtype=np.int64), "labels": np.array(["label"] * 1000000)}
 
     mock_writer = mocker.create_autospec(fl.FlightStreamWriter)
-    flight_client.do_put.return_value = (mock_writer, None)
+    numpy_client.flight.do_put.return_value = (mock_writer, None)
 
     numpy_client.write("test_large", large_data)
     mock_writer.write_table.assert_called_once()
 
 
-def test_schema_preservation(numpy_client, flight_client, test_data, test_table, mocker):
+def test_schema_preservation(numpy_client, test_data, test_table, mocker):
     """Test that schema information is preserved through write/get operations."""
     mock_writer = mocker.create_autospec(fl.FlightStreamWriter)
-    flight_client.do_put.return_value = (mock_writer, None)
+    numpy_client.flight.do_put.return_value = (mock_writer, None)
 
     mock_reader = mocker.create_autospec(fl.FlightStreamReader)
     mock_reader.read_all.return_value = test_table
-    flight_client.do_get.return_value = mock_reader
+    numpy_client.flight.do_get.return_value = mock_reader
 
     result = numpy_client.compute("test_schema", test_data)
 
