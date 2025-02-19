@@ -19,14 +19,18 @@ class Client:
         _client (fl.FlightClient): The underlying Flight client for network communication.
     """
 
-    def __init__(self, client: fl.FlightClient) -> None:
+    def __init__(self, location, **kwargs) -> None:
         """
         Initialize the NumpyClient with a Flight client.
 
         Args:
             client: An initialized Flight client for handling network communication.
         """
-        self._client = client
+        self._client = fl.connect(location, **kwargs)
+
+    @property
+    def flight(self):
+        return self._client
 
     @staticmethod
     def descriptor(command: str) -> fl.FlightDescriptor:
@@ -73,7 +77,7 @@ class Client:
             raise TypeError("The data cannot be converted to an Arrow Table.")
 
         # Initialize the write operation with the server
-        writer, _ = self._client.do_put(descriptor, table.schema)
+        writer, _ = self.flight.do_put(descriptor, table.schema)
 
         try:
             # Send the data to the server
@@ -101,7 +105,7 @@ class Client:
         ticket = fl.Ticket(command)
 
         # Get a reader for the requested data
-        reader = self._client.do_get(ticket)
+        reader = self.flight.do_get(ticket)
 
         # Read and return all data as an Arrow Table
         return reader.read_all()
@@ -135,4 +139,4 @@ class Client:
         """
         Close the Flight server.
         """
-        self._client.close()
+        self.flight.close()
