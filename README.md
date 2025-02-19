@@ -45,12 +45,10 @@ pip install numpy-flight
 
 ```python
 import numpy as np
-import pyarrow.flight as fl
 from np.flight import Client
 
 # Initialize the Flight client
-flight_client = fl.FlightClient('grpc://localhost:8815')
-client = Client(flight_client)
+client = Client('grpc://localhost:8815')
 ```
 
 ### Sending Data
@@ -130,12 +128,9 @@ The client includes proper error handling for common scenarios:
 client.close()
 ```
 
-- Use context managers when possible to ensure proper cleanup:
-
 ```python
-with flight.FlightClient('grpc://localhost:8815') as flight_client:
-    client = Client(flight_client)
-    # ... perform operations
+client = Client('grpc://localhost:8815')
+# ... perform operations
 ```
 
 - Handle large datasets in chunks to manage memory usage effectively.
