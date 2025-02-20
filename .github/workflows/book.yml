@@ -41,7 +41,7 @@ jobs:
         with:
           tests-folder: src/tests
           source-folder: src/np
-          coveralls: 'false'
+          coveralls: 'true'
 
   jupyter:
     runs-on: "ubuntu-latest"
