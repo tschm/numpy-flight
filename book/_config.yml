@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: numpy-client
+title: numpy-flight
 author: tschm
 only_build_toc_files: true
 
@@ -13,7 +13,7 @@ sphinx:
 
 # Information about where the book exists on the web
 repository:
-  url: https://github.com/tschm/numpy-client
+  url: https://github.com/tschm/numpy-flight
   path_to_book: book
   branch: main
 
