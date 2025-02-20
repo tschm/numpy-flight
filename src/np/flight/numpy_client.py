@@ -26,7 +26,23 @@ class Client:
         Args:
             client: An initialized Flight client for handling network communication.
         """
-        self._client = fl.connect(location, **kwargs)
+        self._location = location
+        self._kwargs = kwargs
+
+    def __enter__(self):
+        """
+        Open the database connection
+        """
+        self._client = fl.connect(self._location, **self._kwargs)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """
+        Close the connection
+        """
+        self.flight.close()
+        if exc_val:  # pragma: no cover
+            raise
 
     @property
     def flight(self):
@@ -134,9 +150,3 @@ class Client:
 
         # Retrieve and convert results back to NumPy arrays
         return pa_2_np(self.get(command))
-
-    def close(self):
-        """
-        Close the Flight server.
-        """
-        self.flight.close()

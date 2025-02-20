@@ -48,7 +48,9 @@ import numpy as np
 from np.flight import Client
 
 # Initialize the Flight client
-client = Client('grpc://localhost:8815')
+with Client('grpc://localhost:8815') as client:
+...
+
 ```
 
 ### Sending Data

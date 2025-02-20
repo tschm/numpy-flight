@@ -28,12 +28,11 @@ def numpy_client(mocker, flight_client):
     kwargs = {"key": "value"}
 
     # Act
-    numpy_client = Client(location, **kwargs)
-
-    # Assert
-    mock_fl_connect.assert_called_once_with(location, **kwargs)
-    assert numpy_client.flight == flight_client
-    return numpy_client
+    with Client(location, **kwargs) as numpy_client:
+        # Assert
+        mock_fl_connect.assert_called_once_with(location, **kwargs)
+        assert numpy_client.flight == flight_client
+        yield numpy_client
 
 
 def test_numpy_client_init(numpy_client, flight_client):
