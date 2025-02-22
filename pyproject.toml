@@ -7,7 +7,6 @@ authors = [{name='Thomas Schmelzer', email= 'thomas.schmelzer@gmail.com'}]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "loguru>=0.7.3",
     "numpy>=2.2.3",
     "pyarrow>=19.0.0",
 ]
@@ -17,6 +16,7 @@ repository = "https://github.com/tschm/numpy-client"
 
 [dependency-groups]
 dev = [
+    "loguru>=0.7.3",
     "pre-commit>=4.1.0",
     "pytest>=8.3.4",
     "pytest-cov>=6.0.0",

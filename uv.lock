@@ -219,13 +219,13 @@ name = "numpy-flight"
 version = "0.0.0"
 source = { editable = "." }
 dependencies = [
-    { name = "loguru" },
     { name = "numpy" },
     { name = "pyarrow" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "loguru" },
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -234,13 +234,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "loguru", specifier = ">=0.7.3" },
     { name = "numpy", specifier = ">=2.2.3" },
     { name = "pyarrow", specifier = ">=19.0.0" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "loguru", specifier = ">=0.7.3" },
     { name = "pre-commit", specifier = ">=4.1.0" },
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
