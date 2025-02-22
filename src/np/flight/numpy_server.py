@@ -13,7 +13,7 @@ class Server(fl.FlightServerBase, ABC):
     A Flight Server implementation that handles matrix data and performs computations on it.
     """
 
-    def __init__(self, host, port, logger=None, **kwargs):
+    def __init__(self, host="0.0.0.0", port=8080, logger=None, **kwargs):
         """
         Initialize the server with the provided host and port, and optionally a logger.
 
@@ -22,7 +22,7 @@ class Server(fl.FlightServerBase, ABC):
         :param logger: Optional logger to use for logging messages (defaults to loguru).
         :param kwargs: Additional arguments passed to the FlightServerBase constructor.
         """
-        uri = f"grpc+tcp://{host}:{port}"
+        uri = f"grpc://{host}:{port}"
         super().__init__(uri, **kwargs)  # Initialize the base FlightServer with the URI.
         self._logger = logger or loguru.logger  # Use provided logger or default to loguru's logger.
         self._storage = {}  # Dictionary to store uploaded data associated with specific commands.
@@ -101,7 +101,7 @@ class Server(fl.FlightServerBase, ABC):
         return fl.RecordBatchStream(result_table)
 
     @classmethod
-    def start(cls, host="127.0.0.1", port=5008, logger=None, **kwargs):  # pragma: no cover
+    def start(cls, host="0.0.0.0", port=8080, logger=None, **kwargs):  # pragma: no cover
         """
         Start the server with the specified port and logger.
 
