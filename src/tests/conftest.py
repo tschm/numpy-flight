@@ -13,9 +13,16 @@
 #    limitations under the License.
 """global fixtures"""
 
+from pathlib import Path
+
 import numpy as np
 import pyarrow as pa
 import pytest
+
+
+@pytest.fixture(name="root_dir")
+def root_fixture() -> Path:
+    return Path(__file__).parent.parent.parent
 
 
 @pytest.fixture
