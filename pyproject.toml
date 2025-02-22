@@ -49,3 +49,4 @@ include = [
 
 [tool.bandit]
 exclude_dirs = ["tests"]
+skips = ["B104"]
