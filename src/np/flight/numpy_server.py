@@ -1,7 +1,7 @@
+import logging
 import threading  # Module for creating and managing threads; used for thread safety with locking.
 from abc import ABC, abstractmethod
 
-import loguru  # Logging library that simplifies logging setup and usage.
 import numpy as np
 import pyarrow.flight as fl  # PyArrow's Flight module to handle gRPC-based data transfer with Arrow.
 
@@ -24,7 +24,7 @@ class Server(fl.FlightServerBase, ABC):
         """
         uri = f"grpc://{host}:{port}"
         super().__init__(uri, **kwargs)  # Initialize the base FlightServer with the URI.
-        self._logger = logger or loguru.logger  # Use provided logger or default to loguru's logger.
+        self._logger = logger or logging.getLogger(__name__)  # Use provided logger or default to loguru's logger.
         self._storage = {}  # Dictionary to store uploaded data associated with specific commands.
         self._lock = threading.Lock()  # Lock for ensuring thread safety when accessing shared resources.
 
@@ -109,7 +109,6 @@ class Server(fl.FlightServerBase, ABC):
         :param logger: Optional logger to use.
         :param kwargs: Additional arguments passed to the constructor.
         """
-        logger = logger or loguru.logger  # If no logger is provided, use loguru's default logger.
         server = cls(host=host, port=port, logger=logger, **kwargs)  # Instantiate the server.
         server.logger.info(f"Starting {cls} Flight server on port {port}...")  # Log the server start.
         server.serve()  # Start the server to handle incoming requests.
