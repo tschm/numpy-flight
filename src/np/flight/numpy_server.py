@@ -1,7 +1,7 @@
+import logging
 import threading  # Module for creating and managing threads; used for thread safety with locking.
 from abc import ABC, abstractmethod
 
-import loguru  # Logging library that simplifies logging setup and usage.
 import numpy as np
 import pyarrow.flight as fl  # PyArrow's Flight module to handle gRPC-based data transfer with Arrow.
 
@@ -13,7 +13,7 @@ class Server(fl.FlightServerBase, ABC):
     A Flight Server implementation that handles matrix data and performs computations on it.
     """
 
-    def __init__(self, host, port, logger=None, **kwargs):
+    def __init__(self, host="0.0.0.0", port=8080, logger=None, **kwargs):
         """
         Initialize the server with the provided host and port, and optionally a logger.
 
@@ -22,9 +22,9 @@ class Server(fl.FlightServerBase, ABC):
         :param logger: Optional logger to use for logging messages (defaults to loguru).
         :param kwargs: Additional arguments passed to the FlightServerBase constructor.
         """
-        uri = f"grpc+tcp://{host}:{port}"
+        uri = f"grpc://{host}:{port}"
         super().__init__(uri, **kwargs)  # Initialize the base FlightServer with the URI.
-        self._logger = logger or loguru.logger  # Use provided logger or default to loguru's logger.
+        self._logger = logger or logging.getLogger(__name__)  # Use provided logger or default to loguru's logger.
         self._storage = {}  # Dictionary to store uploaded data associated with specific commands.
         self._lock = threading.Lock()  # Lock for ensuring thread safety when accessing shared resources.
 
@@ -101,7 +101,7 @@ class Server(fl.FlightServerBase, ABC):
         return fl.RecordBatchStream(result_table)
 
     @classmethod
-    def start(cls, host="127.0.0.1", port=5008, logger=None, **kwargs):  # pragma: no cover
+    def start(cls, host="0.0.0.0", port=8080, logger=None, **kwargs):  # pragma: no cover
         """
         Start the server with the specified port and logger.
 
@@ -109,7 +109,6 @@ class Server(fl.FlightServerBase, ABC):
         :param logger: Optional logger to use.
         :param kwargs: Additional arguments passed to the constructor.
         """
-        logger = logger or loguru.logger  # If no logger is provided, use loguru's default logger.
         server = cls(host=host, port=port, logger=logger, **kwargs)  # Instantiate the server.
         server.logger.info(f"Starting {cls} Flight server on port {port}...")  # Log the server start.
         server.serve()  # Start the server to handle incoming requests.
