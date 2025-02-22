@@ -111,7 +111,8 @@ class Server(fl.FlightServerBase, ABC):
         """
         server = cls(host=host, port=port, logger=logger, **kwargs)  # Instantiate the server.
         server.logger.info(f"Starting {cls} Flight server on port {port}...")  # Log the server start.
-        server.serve()  # Start the server to handle incoming requests.
+        # server.serve()  # Start the server to handle incoming requests.
+        return server
 
     @abstractmethod
     def f(self, matrices: dict[str, np.ndarray]) -> dict[str, np.ndarray]: ...  # pragma: no cover
