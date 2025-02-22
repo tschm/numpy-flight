@@ -43,27 +43,45 @@ pip install numpy-flight
 
 ### Basic Setup
 
-```python
-import numpy as np
-from np.flight import Client
+We introduce the Baseclass 'Server':
 
-# Initialize the Flight client
-with Client('grpc://localhost:8815') as client:
-...
+```python
+>>> from np.flight import Server
+
+>>> class TestServer(Server):
+...     def f(self, matrices):
+...          self.logger.info(f"{matrices.keys()}")
+...          # Simple implementation for testing - just return the input
+...          return {key : 2*value for key, value in matrices.items()}
+```
+
+All complexity is hidden in the class 'Server' which is itself a child
+of the pyarrrow's FlightServerBase class. It is enough to implement
+the method 'f' which is expecting a dictionary of numpy arrays. It will
+also return a dictionary of numpy arrays.
+
+The server can be started locally with
+
+```python
+>>> server = TestServer.start(host="127.0.0.1", port=5555)
+```
+
+While the server is running we can use a client for computations
+
+```python
+>>> import numpy as np
+>>> from np.flight import Client
+
+>>> with Client(location="grpc://127.0.0.1:5555") as client:
+...     output = client.compute(command="compute", data={"input": np.array([1,2,3])})
+
+>>> print(output["input"])
+[2 4 6]
 
 ```
 
-### Sending Data
-
 ```python
-# Prepare your NumPy arrays
-data = {
-    'values': np.array([1, 2, 3, 4, 5]),
-    'labels': np.array(['a', 'b', 'c', 'd', 'e'])
-}
-
-# Send data to the server
-client.write('store_data', data)
+server.shutdown()
 ```
 
 ### Retrieving Data
