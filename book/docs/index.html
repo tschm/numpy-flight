@@ -379,26 +379,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-setup">Basic Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-data">Retrieving Data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-with-data">Computing with Data</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-reference">API Reference</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#init-client-fl-flightclient"><code class="docutils literal notranslate"><span class="pre">__init__(client:</span> <span class="pre">fl.FlightClient)</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#write-command-str-data-dict-str-np-ndarray"><code class="docutils literal notranslate"><span class="pre">write(command:</span> <span class="pre">str,</span> <span class="pre">data:</span> <span class="pre">Dict[str,</span> <span class="pre">np.ndarray])</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#get-command-str-pa-table"><code class="docutils literal notranslate"><span class="pre">get(command:</span> <span class="pre">str)</span> <span class="pre">-&gt;</span> <span class="pre">pa.Table</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-command-str-data-dict-str-np-ndarray-dict-str-np-ndarray"><code class="docutils literal notranslate"><span class="pre">compute(command:</span> <span class="pre">str,</span> <span class="pre">data:</span> <span class="pre">Dict[str,</span> <span class="pre">np.ndarray])</span> <span class="pre">-&gt;</span> <span class="pre">Dict[str,</span> <span class="pre">np.ndarray]</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling">Error Handling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-environment"><strong>Set Up Environment</strong></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
 </ul>
             </nav>
         </div>
@@ -425,10 +407,10 @@ document.write(`
 <li><p>An abstract base class for an Apache flight server</p></li>
 <li><p>A client class to communicate with such servers</p></li>
 </ul>
-<p>We efficiently transfer NumPy arrays over Apache Arrow Flight using a custom Client.
-The client provides a simple interface for sending NumPy arrays,
+<p>The client provides a simple interface for sending NumPy arrays,
 performing computations, and retrieving results, all while handling
-the serialization and deserialization automatically in the background.</p>
+the serialization and deserialization automatically in the background
+using Apache Arrow.</p>
 <p>To create a server we expect the user to overload a function performing
 the calcutation based on a dictionary of numpy arrays.</p>
 </section>
@@ -437,8 +419,6 @@ the calcutation based on a dictionary of numpy arrays.</p>
 <ul class="simple">
 <li><p>Seamless conversion between NumPy arrays and Arrow Tables</p></li>
 <li><p>Simple interface for data transfer operations</p></li>
-<li><p>Support for batch computations</p></li>
-<li><p>Automatic resource management</p></li>
 <li><p>Type-safe operations with proper error handling</p></li>
 </ul>
 </section>
@@ -471,7 +451,7 @@ also return a dictionary of numpy arrays.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="n">TestServer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5555</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>While the server is running we can use a client for computations</p>
+<p>While the server is running we can use a Python client for computations</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">np.flight</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
 
@@ -483,111 +463,12 @@ also return a dictionary of numpy arrays.</p>
 
 </pre></div>
 </div>
+<p>Clients for other languages are thinkable.
+We shut the server down with</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">server</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
-<section id="retrieving-data">
-<h3>Retrieving Data<a class="headerlink" href="#retrieving-data" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data from the server</span>
-<span class="n">result_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;retrieve_data&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="computing-with-data">
-<h3>Computing with Data<a class="headerlink" href="#computing-with-data" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Send data and get results in one operation</span>
-<span class="n">input_data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>
-    <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
-<span class="p">}</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="s1">&#39;multiply_arrays&#39;</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="api-reference">
-<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h2>
-<section id="client">
-<h3><code class="docutils literal notranslate"><span class="pre">Client</span></code><a class="headerlink" href="#client" title="Link to this heading">#</a></h3>
-<section id="init-client-fl-flightclient">
-<h4><code class="docutils literal notranslate"><span class="pre">__init__(client:</span> <span class="pre">fl.FlightClient)</span></code><a class="headerlink" href="#init-client-fl-flightclient" title="Link to this heading">#</a></h4>
-<p>Initialize the client with a Flight client instance.</p>
-</section>
-<section id="write-command-str-data-dict-str-np-ndarray">
-<h4><code class="docutils literal notranslate"><span class="pre">write(command:</span> <span class="pre">str,</span> <span class="pre">data:</span> <span class="pre">Dict[str,</span> <span class="pre">np.ndarray])</span></code><a class="headerlink" href="#write-command-str-data-dict-str-np-ndarray" title="Link to this heading">#</a></h4>
-<p>Write NumPy arrays to the Flight server.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code>: String identifying the operation</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Dictionary mapping column names to NumPy arrays</p></li>
-</ul>
-</section>
-<section id="get-command-str-pa-table">
-<h4><code class="docutils literal notranslate"><span class="pre">get(command:</span> <span class="pre">str)</span> <span class="pre">-&gt;</span> <span class="pre">pa.Table</span></code><a class="headerlink" href="#get-command-str-pa-table" title="Link to this heading">#</a></h4>
-<p>Retrieve data from the Flight server.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code>: String identifying the data to retrieve</p></li>
-<li><p>Returns: PyArrow Table containing the retrieved data</p></li>
-</ul>
-</section>
-<section id="compute-command-str-data-dict-str-np-ndarray-dict-str-np-ndarray">
-<h4><code class="docutils literal notranslate"><span class="pre">compute(command:</span> <span class="pre">str,</span> <span class="pre">data:</span> <span class="pre">Dict[str,</span> <span class="pre">np.ndarray])</span> <span class="pre">-&gt;</span> <span class="pre">Dict[str,</span> <span class="pre">np.ndarray]</span></code><a class="headerlink" href="#compute-command-str-data-dict-str-np-ndarray-dict-str-np-ndarray" title="Link to this heading">#</a></h4>
-<p>Perform a computation on the server and retrieve results.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code>: String identifying the computation</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: Input data as dictionary of NumPy arrays</p></li>
-<li><p>Returns: Dictionary of NumPy arrays containing results</p></li>
-</ul>
-</section>
-</section>
-</section>
-<section id="error-handling">
-<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading">#</a></h2>
-<p>The client includes proper error handling for common scenarios:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">FlightError</span></code>: Raised for Flight protocol communication errors</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code>: Raised for data conversion errors</p></li>
-<li><p>Resource cleanup is handled automatically, even in error cases</p></li>
-</ul>
-</section>
-<section id="best-practices">
-<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Always close the Flight client when done:</p></li>
-</ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s1">&#39;grpc://localhost:8815&#39;</span><span class="p">)</span>
-<span class="c1"># ... perform operations</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Handle large datasets in chunks to manage memory usage effectively.</p></li>
-</ul>
-<section id="set-up-environment">
-<h3><strong>Set Up Environment</strong><a class="headerlink" href="#set-up-environment" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>install
-</pre></div>
-</div>
-<p>This installs/updates <a class="reference external" href="https://github.com/astral-sh/uv">uv</a>,
-creates your virtual environment and installs dependencies.</p>
-<p>For adding or removing packages:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>add/remove<span class="w"> </span>requests<span class="w">  </span><span class="c1"># for main dependencies</span>
-uv<span class="w"> </span>add/remove<span class="w"> </span>requests<span class="w"> </span>--dev<span class="w">  </span><span class="c1"># for dev dependencies</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="contributing">
-<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Fork the repository</p></li>
-<li><p>Create your feature branch (git checkout -b feature/amazing-feature)</p></li>
-<li><p>Commit your changes (git commit -m ‘Add some amazing feature’)</p></li>
-<li><p>Push to the branch (git push origin feature/amazing-feature)</p></li>
-<li><p>Open a Pull Request</p></li>
-</ul>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -653,26 +534,8 @@ uv<span class="w"> </span>add/remove<span class="w"> </span>requests<span class=
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-setup">Basic Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retrieving-data">Retrieving Data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-with-data">Computing with Data</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-reference">API Reference</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#init-client-fl-flightclient"><code class="docutils literal notranslate"><span class="pre">__init__(client:</span> <span class="pre">fl.FlightClient)</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#write-command-str-data-dict-str-np-ndarray"><code class="docutils literal notranslate"><span class="pre">write(command:</span> <span class="pre">str,</span> <span class="pre">data:</span> <span class="pre">Dict[str,</span> <span class="pre">np.ndarray])</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#get-command-str-pa-table"><code class="docutils literal notranslate"><span class="pre">get(command:</span> <span class="pre">str)</span> <span class="pre">-&gt;</span> <span class="pre">pa.Table</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-command-str-data-dict-str-np-ndarray-dict-str-np-ndarray"><code class="docutils literal notranslate"><span class="pre">compute(command:</span> <span class="pre">str,</span> <span class="pre">data:</span> <span class="pre">Dict[str,</span> <span class="pre">np.ndarray])</span> <span class="pre">-&gt;</span> <span class="pre">Dict[str,</span> <span class="pre">np.ndarray]</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-handling">Error Handling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-environment"><strong>Set Up Environment</strong></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
 </ul>
   </nav></div>
 
