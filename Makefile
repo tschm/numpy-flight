@@ -29,12 +29,6 @@ help:  ## Display this help screen
 	@grep -E '^[a-z.A-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}' | sort
 
 
-.PHONY: marimo
-marimo: install ## Install Marimo
-	@uv pip install marimo
-	@uv run marimo edit book/marimo
-
-
 .PHONY: test
 test: install  ## Run pytests
 	@uv pip install pytest
