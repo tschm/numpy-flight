@@ -46,13 +46,24 @@ pip install numpy-flight
 We introduce the Baseclass 'Server':
 
 ```python
->>> from np.flight import Server
+>> > from numpy.flight import Server
 
->>> class TestServer(Server):
-...     def f(self, matrices):
-...          self.logger.info(f"{matrices.keys()}")
-...          # Simple implementation for testing - just return the input
-...          return {key : 2*value for key, value in matrices.items()}
+>> >
+
+class TestServer(Server):
+
+
+    ...
+
+
+def f(self, matrices):
+
+
+    ...
+self.logger.info(f"{matrices.keys()}")
+...  # Simple implementation for testing - just return the input
+...
+return {key: 2 * value for key, value in matrices.items()}
 ```
 
 All complexity is hidden in the class 'Server' which is itself a child
@@ -69,13 +80,14 @@ The server can be started locally with
 While the server is running we can use a client for computations
 
 ```python
->>> import numpy as np
->>> from np.flight import Client
+>> > import numpy as np
+>> > from numpy.flight import Client
 
->>> with Client(location="grpc://127.0.0.1:5555") as client:
-...     output = client.compute(command="compute", data={"input": np.array([1,2,3])})
+>> > with Client(location="grpc://127.0.0.1:5555") as client:
+    ...
+output = client.compute(command="compute", data={"input": np.array([1, 2, 3])})
 
->>> print(output["input"])
+>> > print(output["input"])
 [2 4 6]
 
 ```

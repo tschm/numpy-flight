@@ -5,7 +5,7 @@ import pyarrow.flight as fl
 import pytest
 from loguru import logger
 
-from np.flight import Server  # Adjust import path as needed
+from tschm.flight import Server  # Adjust import path as needed
 
 
 # Create a concrete implementation of the abstract Server class for testing
