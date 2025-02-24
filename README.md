@@ -15,10 +15,10 @@ We provide
 - An abstract base class for an Apache flight server
 - A client class to communicate with such servers
 
-We efficiently transfer NumPy arrays over Apache Arrow Flight using a custom Client.
 The client provides a simple interface for sending NumPy arrays,
 performing computations, and retrieving results, all while handling
-the serialization and deserialization automatically in the background.
+the serialization and deserialization automatically in the background
+using Apache Arrow.
 
 To create a server we expect the user to overload a function performing
 the calcutation based on a dictionary of numpy arrays.
@@ -27,8 +27,6 @@ the calcutation based on a dictionary of numpy arrays.
 
 - Seamless conversion between NumPy arrays and Arrow Tables
 - Simple interface for data transfer operations
-- Support for batch computations
-- Automatic resource management
 - Type-safe operations with proper error handling
 
 ## Installation
@@ -66,7 +64,7 @@ The server can be started locally with
 >>> server = TestServer.start(host="127.0.0.1", port=5555)
 ```
 
-While the server is running we can use a client for computations
+While the server is running we can use a Python client for computations
 
 ```python
 >>> import numpy as np
@@ -80,101 +78,9 @@ While the server is running we can use a client for computations
 
 ```
 
+Clients for other languages are thinkable.
+We shut the server down with
+
 ```python
 server.shutdown()
 ```
-
-### Retrieving Data
-
-```python
-# Get data from the server
-result_table = client.get('retrieve_data')
-```
-
-### Computing with Data
-
-```python
-# Send data and get results in one operation
-input_data = {
-    'x': np.array([1, 2, 3]),
-    'y': np.array([4, 5, 6])
-}
-results = client.compute('multiply_arrays', input_data)
-```
-
-## API Reference
-
-### `Client`
-
-#### `__init__(client: fl.FlightClient)`
-
-Initialize the client with a Flight client instance.
-
-#### `write(command: str, data: Dict[str, np.ndarray])`
-
-Write NumPy arrays to the Flight server.
-
-- `command`: String identifying the operation
-- `data`: Dictionary mapping column names to NumPy arrays
-
-#### `get(command: str) -> pa.Table`
-
-Retrieve data from the Flight server.
-
-- `command`: String identifying the data to retrieve
-- Returns: PyArrow Table containing the retrieved data
-
-#### `compute(command: str, data: Dict[str, np.ndarray]) -> Dict[str, np.ndarray]`
-
-Perform a computation on the server and retrieve results.
-
-- `command`: String identifying the computation
-- `data`: Input data as dictionary of NumPy arrays
-- Returns: Dictionary of NumPy arrays containing results
-
-## Error Handling
-
-The client includes proper error handling for common scenarios:
-
-- `FlightError`: Raised for Flight protocol communication errors
-- `ValueError`: Raised for data conversion errors
-- Resource cleanup is handled automatically, even in error cases
-
-## Best Practices
-
-- Always close the Flight client when done:
-
-```python
-client.close()
-```
-
-```python
-client = Client('grpc://localhost:8815')
-# ... perform operations
-```
-
-- Handle large datasets in chunks to manage memory usage effectively.
-
-### **Set Up Environment**
-
-```bash
-make install
-```
-
-This installs/updates [uv](https://github.com/astral-sh/uv),
-creates your virtual environment and installs dependencies.
-
-For adding or removing packages:
-
-```bash
-uv add/remove requests  # for main dependencies
-uv add/remove requests --dev  # for dev dependencies
-```
-
-## Contributing
-
-- Fork the repository
-- Create your feature branch (git checkout -b feature/amazing-feature)
-- Commit your changes (git commit -m 'Add some amazing feature')
-- Push to the branch (git push origin feature/amazing-feature)
-- Open a Pull Request
