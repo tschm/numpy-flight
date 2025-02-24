@@ -46,7 +46,7 @@ pip install numpy-flight
 We introduce the Baseclass 'Server':
 
 ```python
->> > from numpy.flight import Server
+>> > from tschm.flight import Server
 
 >> >
 
@@ -81,7 +81,7 @@ While the server is running we can use a client for computations
 
 ```python
 >> > import numpy as np
->> > from numpy.flight import Client
+>> > from tschm.flight import Client
 
 >> > with Client(location="grpc://127.0.0.1:5555") as client:
     ...
