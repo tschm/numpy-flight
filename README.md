@@ -6,8 +6,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/tschm/numpy-flight/badge.svg?branch=main)](https://coveralls.io/github/tschm/numpy-flight?branch=main)
 [![Created with qCradle](https://img.shields.io/badge/Created%20with-qCradle-blue?style=flat-square)](https://github.com/tschm/package)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/tschm/numpy-flight)
-
 ## A Problem
 
 We provide
