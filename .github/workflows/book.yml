@@ -28,7 +28,7 @@ jobs:
 
       - uses: cvxgrp/.github/actions/pdoc@v2.2.4
         with:
-          source-folder: src/np
+          source-folder: src/tschm
 
 
   test:
@@ -40,7 +40,7 @@ jobs:
       - uses: cvxgrp/.github/actions/coverage@v2.2.4
         with:
           tests-folder: src/tests
-          source-folder: src/np
+          source-folder: src/tschm
           coveralls: 'true'
 
   jupyter:
