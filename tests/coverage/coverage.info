@@ -1,10 +1,10 @@
-SF:src/np/flight/__init__.py
+SF:src/tschm/flight/__init__.py
 DA:1,1
 DA:2,1
 LF:2
 LH:2
 end_of_record
-SF:src/np/flight/numpy_client.py
+SF:src/tschm/flight/numpy_client.py
 DA:1,1
 DA:3,1
 DA:4,1
@@ -64,7 +64,7 @@ FNDA:1,Client.compute
 FNF:8
 FNH:8
 end_of_record
-SF:src/np/flight/numpy_server.py
+SF:src/tschm/flight/numpy_server.py
 DA:1,1
 DA:2,1
 DA:3,1
@@ -125,9 +125,9 @@ FNDA:0,Server.f
 FNF:7
 FNH:5
 end_of_record
-SF:src/np/flight/utils/__init__.py
+SF:src/tschm/flight/utils/__init__.py
 end_of_record
-SF:src/np/flight/utils/alter.py
+SF:src/tschm/flight/utils/alter.py
 DA:1,1
 DA:3,1
 DA:4,1
