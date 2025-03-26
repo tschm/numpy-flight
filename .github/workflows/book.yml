@@ -17,7 +17,7 @@ jobs:
       - name: "Build the virtual environment"
         uses: cvxgrp/.github/actions/environment@v2.2.8
 
-      - uses: cvxgrp/.github/actions/pdoc@v2.2.8
+      - uses: tschm/cradle/actions/pdoc@v0.1.56
         with:
           source-folder: src/tschm
 
@@ -28,7 +28,7 @@ jobs:
       - name: "Build the virtual environment"
         uses: cvxgrp/.github/actions/environment@v2.2.8
 
-      - uses: cvxgrp/.github/actions/coverage@v2.2.8
+      - uses: tschm/cradle/actions/coverage@v0.1.56
         with:
           tests-folder: src/tests
           source-folder: src/tschm
@@ -40,7 +40,7 @@ jobs:
       - name: "Build the virtual environment"
         uses: cvxgrp/.github/actions/environment@v2.2.8
 
-      - uses: cvxgrp/.github/actions/jupyter@v2.2.8
+      - uses: tschm/cradle/actions/jupyter@v0.1.56
 
   book:
     runs-on: "ubuntu-latest"
@@ -50,6 +50,9 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout [${{ github.repository }}]
+        uses: actions/checkout@v4
+
       - name: Upload the book
         if: ${{ env.ACT != 'true' }}  # Skip if running with 'act'
-        uses: cvxgrp/.github/actions/book@v2.2.8
+        uses: tschm/cradle/actions/book@v0.1.56
