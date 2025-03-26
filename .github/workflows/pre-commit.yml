@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: "Build the virtual environment"
         uses: tschm/cradle/actions/environment@v0.1.56
-        
+
       - uses: tschm/cradle/actions/deptry@v0.1.56
         with:
           source-folder: src/tschm
