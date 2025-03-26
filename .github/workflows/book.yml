@@ -17,7 +17,7 @@ jobs:
       - name: "Build the virtual environment"
         uses: tschm/cradle/actions/environment@v0.1.56
 
-      - uses: tschm/cradle/actions/pdoc@v0.1.56
+      - uses: tschm/cradle/actions/pdoc@v0.1.57
         with:
           source-folder: src/tschm
 
@@ -28,7 +28,7 @@ jobs:
       - name: "Build the virtual environment"
         uses: tschm/cradle/actions/environment@v0.1.56
 
-      - uses: tschm/cradle/actions/coverage@v0.1.56
+      - uses: tschm/cradle/actions/coverage@v0.1.57
         with:
           tests-folder: src/tests
           source-folder: src/tschm
@@ -40,7 +40,7 @@ jobs:
       - name: "Build the virtual environment"
         uses: tschm/cradle/actions/environment@v0.1.56
 
-      - uses: tschm/cradle/actions/jupyter@v0.1.56
+      - uses: tschm/cradle/actions/jupyter@v0.1.57
 
   book:
     runs-on: "ubuntu-latest"
@@ -55,4 +55,4 @@ jobs:
 
       - name: Upload the book
         if: ${{ env.ACT != 'true' }}  # Skip if running with 'act'
-        uses: tschm/cradle/actions/book@v0.1.56
+        uses: tschm/cradle/actions/book@v0.1.57
