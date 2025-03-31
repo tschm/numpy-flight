@@ -15,9 +15,9 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Build the virtual environment"
-        uses: tschm/cradle/actions/environment@v0.1.57
+        uses: tschm/cradle/actions/environment@v0.1.59
 
-      - uses: tschm/cradle/actions/pdoc@v0.1.57
+      - uses: tschm/cradle/actions/pdoc@v0.1.59
         with:
           source-folder: src/tschm
 
@@ -26,7 +26,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Build the virtual environment"
-        uses: tschm/cradle/actions/environment@v0.1.57
+        uses: tschm/cradle/actions/environment@v0.1.59
 
       - uses: tschm/cradle/actions/coverage@v0.1.59
         with:
@@ -37,9 +37,9 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Build the virtual environment"
-        uses: tschm/cradle/actions/environment@v0.1.57
+        uses: tschm/cradle/actions/environment@v0.1.59
 
-      - uses: tschm/cradle/actions/jupyter@v0.1.57
+      - uses: tschm/cradle/actions/jupyter@v0.1.59
 
   book:
     runs-on: "ubuntu-latest"
@@ -54,4 +54,4 @@ jobs:
 
       - name: Upload the book
         if: ${{ env.ACT != 'true' }}  # Skip if running with 'act'
-        uses: tschm/cradle/actions/book@v0.1.57
+        uses: tschm/cradle/actions/book@v0.1.59
