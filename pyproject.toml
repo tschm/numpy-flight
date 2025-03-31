@@ -14,7 +14,7 @@ dependencies = [
 [project.urls]
 repository = "https://github.com/tschm/numpy-client"
 
-[dependency-groups]
+[project.optional-dependencies]
 dev = [
     "loguru>=0.7.3",
     "pre-commit>=4.1.0",
@@ -50,3 +50,7 @@ include = [
 [tool.bandit]
 exclude_dirs = ["tests"]
 skips = ["B104"]
+
+[tool.deptry]
+# see https://deptry.com/usage/#pep-621-dev-dependency-groups
+pep621_dev_dependency_groups = ["dev"]
