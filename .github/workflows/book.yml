@@ -28,11 +28,10 @@ jobs:
       - name: "Build the virtual environment"
         uses: tschm/cradle/actions/environment@v0.1.57
 
-      - uses: tschm/cradle/actions/coverage@v0.1.57
+      - uses: tschm/cradle/actions/coverage@v0.1.59
         with:
           tests-folder: src/tests
           source-folder: src/tschm
-          coveralls: 'true'
 
   jupyter:
     runs-on: "ubuntu-latest"
