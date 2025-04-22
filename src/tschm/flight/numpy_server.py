@@ -13,7 +13,7 @@ class Server(fl.FlightServerBase, ABC):
     A Flight Server implementation that handles matrix data and performs computations on it.
     """
 
-    def __init__(self, host="0.0.0.0", port=8080, logger=None, **kwargs):
+    def __init__(self, host="127.0.0.1", port=8080, logger=None, **kwargs):
         """
         Initialize the server with the provided host and port, and optionally a logger.
 
@@ -101,7 +101,7 @@ class Server(fl.FlightServerBase, ABC):
         return fl.RecordBatchStream(result_table)
 
     @classmethod
-    def start(cls, host="0.0.0.0", port=8080, logger=None, **kwargs):  # pragma: no cover
+    def start(cls, host="127.0.0.1", port=8080, logger=None, **kwargs):  # pragma: no cover
         """
         Start the server with the specified port and logger.
 
