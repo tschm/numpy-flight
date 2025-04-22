@@ -4,6 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
 [![CI](https://github.com/tschm/numpy-flight/actions/workflows/ci.yml/badge.svg)](https://github.com/tschm/numpy-flight/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/tschm/numpy-flight/badge.svg?branch=main)](https://coveralls.io/github/tschm/numpy-flight?branch=main)
+[![CodeFactor](https://www.codefactor.io/repository/github/tschm/numpy-flight/badge)](https://www.codefactor.io/repository/github/tschm/numpy-flight)
 [![Created with qCradle](https://img.shields.io/badge/Created%20with-qCradle-blue?style=flat-square)](https://github.com/tschm/package)
 
 ## A Problem
