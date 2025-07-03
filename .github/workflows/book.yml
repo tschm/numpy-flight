@@ -34,18 +34,10 @@ jobs:
         with:
           tests-folder: src/tests
           source-folder: src/tschm
-
-  jupyter:
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: "Build the virtual environment"
-        uses: tschm/cradle/actions/environment@v0.1.72
-
-      - uses: tschm/cradle/actions/jupyter@v0.1.72
-
+          
   book:
     runs-on: "ubuntu-latest"
-    needs: [test, pdoc, jupyter]
+    needs: [test, pdoc]
 
     environment:
       name: github-pages
@@ -58,3 +50,9 @@ jobs:
     steps:
       - name: Upload the book
         uses: tschm/cradle/actions/book@v0.1.72
+        with:
+          title: "Numpy Flight"
+          links: |
+            {
+              "API": "./pdoc/index.html"
+            }
