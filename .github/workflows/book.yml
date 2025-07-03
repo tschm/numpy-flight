@@ -17,9 +17,9 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Build the virtual environment"
-        uses: tschm/cradle/actions/environment@v0.1.72
+        uses: tschm/cradle/actions/environment@v0.1.75
 
-      - uses: tschm/cradle/actions/pdoc@v0.1.72
+      - uses: tschm/cradle/actions/pdoc@v0.1.75
         with:
           source-folder: src/tschm
 
@@ -28,9 +28,9 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Build the virtual environment"
-        uses: tschm/cradle/actions/environment@v0.1.72
+        uses: tschm/cradle/actions/environment@v0.1.75
 
-      - uses: tschm/cradle/actions/coverage@v0.1.72
+      - uses: tschm/cradle/actions/coverage@v0.1.75
         with:
           tests-folder: src/tests
           source-folder: src/tschm
@@ -49,7 +49,7 @@ jobs:
 
     steps:
       - name: Upload the book
-        uses: tschm/cradle/actions/book@v0.1.72
+        uses: tschm/cradle/actions/book@v0.1.75
         with:
           title: "Numpy Flight"
           links: |
