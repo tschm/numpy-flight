@@ -34,7 +34,7 @@ jobs:
         with:
           tests-folder: src/tests
           source-folder: src/tschm
-          
+
   book:
     runs-on: "ubuntu-latest"
     needs: [test, pdoc]
