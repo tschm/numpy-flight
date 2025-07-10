@@ -1,4 +1,4 @@
-# [Numpy with Apache Arrow Flight](https://tschm.github.io/numpy-flight/book)
+# [Numpy with Apache Arrow Flight](https://tschm.github.io/numpy-flight)
 
 [![PyPI version](https://badge.fury.io/py/numpy-flight.svg)](https://badge.fury.io/py/numpy-flight)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.txt)
