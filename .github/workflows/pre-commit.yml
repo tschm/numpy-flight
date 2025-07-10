@@ -16,7 +16,7 @@ jobs:
 
       - uses: tschm/cradle/actions/deptry@v0.3.01
         with:
-          source-folder: src/tschm
+          source-folder: src/flight
 
   pre-commit:
     runs-on: ubuntu-latest

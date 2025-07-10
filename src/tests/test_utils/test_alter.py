@@ -1,7 +1,7 @@
 import numpy as np
 import pyarrow as pa
 
-from tschm.flight.utils.alter import np_2_pa, pa_2_np
+from flight.utils.alter import np_2_pa, pa_2_np
 
 
 def test_conversion_numpy_to_pyarrow():
