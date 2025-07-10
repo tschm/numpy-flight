@@ -3,8 +3,8 @@ import pyarrow as pa
 import pyarrow.flight as fl
 import pytest
 
-from tschm.flight import Client  # Adjust import path as needed
-from tschm.flight.utils.alter import np_2_pa, pa_2_np
+from flight import Client  # Adjust import path as needed
+from flight.utils.alter import np_2_pa, pa_2_np
 
 
 @pytest.fixture
