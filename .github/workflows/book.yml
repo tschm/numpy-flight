@@ -54,5 +54,7 @@ jobs:
           title: "Numpy Flight"
           links: |
             {
-              "API": "./pdoc/index.html"
+              "API": "./pdoc/index.html",
+              "Coverage":"./tests/html-coverage/index.html",
+              l"Tests":"./tests/html-report/report.html"
             }
