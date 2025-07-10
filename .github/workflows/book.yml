@@ -21,7 +21,7 @@ jobs:
 
       - uses: tschm/cradle/actions/pdoc@v0.1.75
         with:
-          source-folder: src/tschm
+          source-folder: src/flight
 
 
   test:
