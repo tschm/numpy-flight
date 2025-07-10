@@ -56,5 +56,5 @@ jobs:
             {
               "API": "./pdoc/index.html",
               "Coverage":"./tests/html-coverage/index.html",
-              l"Tests":"./tests/html-report/report.html"
+              "Tests":"./tests/html-report/report.html"
             }
