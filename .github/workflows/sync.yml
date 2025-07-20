@@ -1,7 +1,7 @@
 name: SYNC
 
 on:
-  workflow_dispatch:
+  workflow_dispatch
 
 permissions:
   contents: write  # Needed to create releases
