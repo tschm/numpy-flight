@@ -1,13 +1,19 @@
-from typing import Dict
+"""Utility module for converting between NumPy arrays and PyArrow Tables.
+
+This module provides functions to convert NumPy arrays to PyArrow Tables and vice versa,
+preserving the original array shapes and data types. It's particularly useful for
+serializing multi-dimensional arrays for transmission over Arrow Flight.
+"""
 
 import numpy as np
 import pyarrow as pa
 
 
-def np_2_pa(data: Dict[str, np.ndarray]) -> pa.Table:
-    """
-    Convert a dictionary of NumPy arrays into a PyArrow Table.
-    Each array is stored as a structured array containing the flattened data and its original shape.
+def np_2_pa(data: dict[str, np.ndarray]) -> pa.Table:
+    """Convert a dictionary of NumPy arrays into a PyArrow Table.
+
+    Each array is stored as a structured array containing
+    the flattened data and its original shape.
 
     Args:
         data (Dict[str, np.ndarray]): Dictionary where keys are column names and values are NumPy arrays
@@ -39,9 +45,14 @@ def np_2_pa(data: Dict[str, np.ndarray]) -> pa.Table:
     """
 
     def _f(value: np.ndarray) -> pa.Array:
-        # if value is None:
-        #    raise TypeError("Value cannot be None")
+        """Convert a single NumPy array to a PyArrow Array with structure.
 
+        Args:
+            value: The NumPy array to convert.
+
+        Returns:
+            A PyArrow Array containing a single structured value with 'data' and 'shape' fields.
+        """
         arr = np.asarray(value)
 
         # Create a dictionary with the flattened data and shape
@@ -53,8 +64,8 @@ def np_2_pa(data: Dict[str, np.ndarray]) -> pa.Table:
 
 
 def pa_2_np(table: pa.Table) -> dict[str, np.ndarray]:
-    """
-    Convert a PyArrow Table back to a dictionary of NumPy arrays.
+    """Convert a PyArrow Table back to a dictionary of NumPy arrays.
+
     This is the inverse operation of np_2_pa.
 
     Args:
@@ -66,6 +77,14 @@ def pa_2_np(table: pa.Table) -> dict[str, np.ndarray]:
     """
 
     def _f(col_name: str) -> np.ndarray:
+        """Convert a single column from the PyArrow Table back to a NumPy array.
+
+        Args:
+            col_name: The name of the column to convert.
+
+        Returns:
+            The reconstructed NumPy array with its original shape.
+        """
         struct_arr = table.column(col_name)[0].as_py()
         # Reconstruct the original array
         data = np.asarray(struct_arr["data"])
