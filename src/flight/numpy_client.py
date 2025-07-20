@@ -1,4 +1,9 @@
-from typing import Dict
+"""Client module for handling NumPy array operations over Apache Arrow Flight.
+
+This module provides a client interface for sending NumPy arrays to a Flight server,
+retrieving data, and performing computations with automatic conversion between
+NumPy arrays and Arrow Tables.
+"""
 
 import numpy as np
 import pyarrow as pa
@@ -8,8 +13,7 @@ from .utils.alter import np_2_pa, pa_2_np
 
 
 class Client:
-    """
-    A client for handling NumPy array operations over Apache Arrow Flight.
+    """A client for handling NumPy array operations over Apache Arrow Flight.
 
     This class provides an interface for sending NumPy arrays to a Flight server,
     retrieving data, and performing computations. It handles the conversion between
@@ -19,39 +23,52 @@ class Client:
         _client (fl.FlightClient): The underlying Flight client for network communication.
     """
 
-    def __init__(self, location, **kwargs) -> None:
-        """
-        Initialize the NumpyClient with a Flight client.
+    def __init__(self, location: str, **kwargs) -> None:
+        """Initialize the NumpyClient with a Flight server location.
 
         Args:
-            client: An initialized Flight client for handling network communication.
+            location: The URI location of the Flight server to connect to.
+            **kwargs: Additional keyword arguments to pass to the Flight client.
         """
         self._location = location
         self._kwargs = kwargs
 
-    def __enter__(self):
-        """
-        Open the database connection
+    def __enter__(self) -> "Client":
+        """Open the database connection.
+
+        Returns:
+            Client: The client instance with an active connection.
         """
         self._client = fl.connect(self._location, **self._kwargs)
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: type[BaseException] | None, exc_val: BaseException | None, exc_tb: object) -> None:
+        """Close the connection.
+
+        Args:
+            exc_type: The exception type if an exception was raised in the context.
+            exc_val: The exception value if an exception was raised in the context.
+            exc_tb: The traceback if an exception was raised in the context.
+
+        Raises:
+            Exception: Re-raises any exception that occurred in the context.
         """
-        Close the connection
-        """
-        self.flight.close()
+        self._client.close()
         if exc_val:  # pragma: no cover
             raise
 
     @property
-    def flight(self):
+    def flight(self) -> fl.FlightClient:
+        """Get the underlying Flight client.
+
+        Returns:
+            fl.FlightClient: The Flight client instance used for communication.
+        """
         return self._client
 
     @staticmethod
     def descriptor(command: str) -> fl.FlightDescriptor:
-        """
-        Create a FlightDescriptor for an opaque command.
+        """Create a FlightDescriptor for an opaque command.
 
         A FlightDescriptor is used to identify and describe the data being transferred
         over the Flight protocol.
@@ -64,9 +81,8 @@ class Client:
         """
         return fl.FlightDescriptor.for_command(command.encode())
 
-    def write(self, command: str, data: Dict[str, np.ndarray]) -> None:
-        """
-        Write NumPy array data to the Flight server.
+    def write(self, command: str, data: dict[str, np.ndarray]) -> None:
+        """Write NumPy array data to the Flight server.
 
         This method converts the input NumPy arrays to an Arrow Table and sends it
         to the server using the specified command.
@@ -103,8 +119,7 @@ class Client:
             writer.close()
 
     def get(self, command: str) -> pa.Table:
-        """
-        Retrieve data from the Flight server.
+        """Retrieve data from the Flight server.
 
         Issues a GET request to the server and returns the results as an Arrow Table.
 
@@ -126,9 +141,8 @@ class Client:
         # Read and return all data as an Arrow Table
         return reader.read_all()
 
-    def compute(self, command: str, data: Dict[str, np.ndarray]) -> Dict[str, np.ndarray]:
-        """
-        Send data to the server, perform computation, and retrieve results.
+    def compute(self, command: str, data: dict[str, np.ndarray]) -> dict[str, np.ndarray]:
+        """Send data to the server, perform computation, and retrieve results.
 
         This is a convenience method that combines write and get operations into
         a single call. It handles the conversion between NumPy arrays and Arrow

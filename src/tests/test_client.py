@@ -1,3 +1,9 @@
+"""Tests for the Client class in the flight package.
+
+This module contains tests for the Client class, which provides a client interface
+for sending NumPy arrays to a Flight server, retrieving data, and performing computations.
+"""
+
 import numpy as np
 import pyarrow as pa
 import pyarrow.flight as fl
@@ -9,17 +15,13 @@ from flight.utils.alter import np_2_pa, pa_2_np
 
 @pytest.fixture
 def flight_client(mocker):
-    """
-    Create a mock Flight client for testing using pytest-mock.
-    """
+    """Create a mock Flight client for testing using pytest-mock."""
     return mocker.create_autospec(fl.FlightClient)
 
 
 @pytest.fixture
 def numpy_client(mocker, flight_client):
-    """
-    Create a NumpyClient instance with a mock Flight client.
-    """
+    """Create a NumpyClient instance with a mock Flight client."""
     mock_fl_connect = mocker.patch("pyarrow.flight.connect")  # Replace with the actual module path
     # mock_client = MagicMock()
     mock_fl_connect.return_value = flight_client
@@ -36,6 +38,12 @@ def numpy_client(mocker, flight_client):
 
 
 def test_numpy_client_init(numpy_client, flight_client):
+    """Test that the Client is initialized correctly with the Flight client.
+
+    Args:
+        numpy_client: The Client fixture.
+        flight_client: The mock Flight client fixture.
+    """
     assert numpy_client.flight == flight_client
 
 
@@ -49,6 +57,15 @@ def test_descriptor_creation():
 
 
 def test_np_2_pa(test_data, test_table):
+    """Test the conversion functions between NumPy arrays and PyArrow Tables.
+
+    This test verifies that the np_2_pa and pa_2_np functions correctly convert
+    data between NumPy arrays and PyArrow Tables in both directions.
+
+    Args:
+        test_data: Dictionary of NumPy arrays for testing.
+        test_table: PyArrow Table for testing.
+    """
     assert np_2_pa(test_data).equals(test_table)
     assert np.array_equal(pa_2_np(test_table)["values"], test_data["values"])
     assert np.array_equal(pa_2_np(test_table)["labels"], test_data["labels"])
