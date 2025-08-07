@@ -4,7 +4,7 @@
 #     "marimo==0.13.15"
 # ]
 # ///
-"""Marimo Hello World."""
+"""Hello World."""
 
 import marimo
 
