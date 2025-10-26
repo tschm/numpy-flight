@@ -5,10 +5,10 @@ description = "A little client/server for applications driven by numpy"
 # Please add authors and correct the email...
 authors = [{name='Thomas Schmelzer', email= 'thomas.schmelzer@gmail.com'}]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "numpy>=2.2.3",
-    "pyarrow>=19.0.0",
+    "pyarrow>=22.0.0",
 ]
 
 [project.urls]
