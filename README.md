@@ -51,6 +51,7 @@ We introduce the Baseclass 'Server':
 ...          self.logger.info(f"{matrices.keys()}")
 ...          # Simple implementation for testing - just return the input
 ...          return {key : 2*value for key, value in matrices.items()}
+
 ```
 
 All complexity is hidden in the class 'Server' which is itself a child
@@ -62,6 +63,7 @@ The server can be started locally with
 
 ```python
 >>> server = TestServer.start(host="127.0.0.1", port=5555)
+
 ```
 
 While the server is running we can use a Python client for computations
