@@ -44,13 +44,16 @@ pip install numpy-flight
 We introduce the Baseclass 'Server':
 
 ```python
->>> from flight import Server
+from flight import Server
 
->>> class TestServer(Server):
-...     def f(self, matrices):
-...          self.logger.info(f"{matrices.keys()}")
-...          # Simple implementation for testing - just return the input
-...          return {key : 2*value for key, value in matrices.items()}
+class TestServer(Server):
+    def f(self, matrices):
+        self.logger.info(f"{matrices.keys()}")
+        # Simple implementation for testing - just return the input multiplied by 2
+        return {key: 2 * value for key, value in matrices.items()}
+```
+
+```result
 
 ```
 
@@ -62,27 +65,35 @@ also return a dictionary of numpy arrays.
 The server can be started locally with
 
 ```python
->>> server = TestServer.start(host="127.0.0.1", port=5555)
+server = TestServer.start(host="127.0.0.1", port=5555)
+```
+
+```result
 
 ```
 
 While the server is running we can use a Python client for computations
 
 ```python
->>> import numpy as np
->>> from flight import Client
+# Ensure local imports work when running this example directly from the repo
+import sys
+sys.path.insert(0, "src")
 
->>> with Client(location="grpc://127.0.0.1:5555") as client:
-...     output = client.compute(command="compute", data={"input": np.array([1,2,3])})
+import numpy as np
+from flight import Client
 
->>> print(output["input"])
-[2 4 6]
+with Client(location="grpc://127.0.0.1:5555") as client:
+    output = client.compute(command="compute", data={"input": np.array([1, 2, 3])})
+```
+```result
 
 ```
-
 Clients for other languages are thinkable.
 We shut the server down with
 
 ```python
 server.shutdown()
+```
+```result
+
 ```
