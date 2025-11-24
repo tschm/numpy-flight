@@ -12,3 +12,5 @@ include: |
     Makefile
     ruff.toml
     Taskfile.yml
+exclude: |
+    .github/workflows/docker.yml
