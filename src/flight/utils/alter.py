@@ -29,6 +29,7 @@ def np_2_pa(data: dict[str, np.ndarray]) -> pa.Table:
         >>> table = np_2_pa(data)
         >>> print(table.schema)
         array1: struct<data: list<item: int64>, shape: list<item: int64>>
+        ...
 
         >>> # Multiple arrays of different shapes
         >>> data = {
