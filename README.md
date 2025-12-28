@@ -53,10 +53,6 @@ class TestServer(Server):
         return {key: 2 * value for key, value in matrices.items()}
 ```
 
-```result
-
-```
-
 All complexity is hidden in the class 'Server' which is itself a child
 of the pyarrrow's FlightServerBase class. It is enough to implement
 the method 'f' which is expecting a dictionary of numpy arrays. It will
@@ -66,10 +62,6 @@ The server can be started locally with
 
 ```python
 server = TestServer.start(host="127.0.0.1", port=5555)
-```
-
-```result
-
 ```
 
 While the server is running we can use a Python client for computations
@@ -85,15 +77,12 @@ from flight import Client
 with Client(location="grpc://127.0.0.1:5555") as client:
     output = client.compute(command="compute", data={"input": np.array([1, 2, 3])})
 ```
-```result
 
-```
 Clients for other languages are thinkable.
 We shut the server down with
 
 ```python
 server.shutdown()
 ```
-```result
 
 ```
