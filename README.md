@@ -84,5 +84,3 @@ We shut the server down with
 ```python
 server.shutdown()
 ```
-
-```
