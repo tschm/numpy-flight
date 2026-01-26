@@ -16,7 +16,7 @@ import pyarrow.flight as fl
 from .utils.alter import np_2_pa, pa_2_np
 
 
-class Server(fl.FlightServerBase, ABC):
+class Server(fl.FlightServerBase, ABC):  # type: ignore[misc]
     """A Flight Server implementation that handles matrix data and performs computations on it.
 
     This abstract base class provides the foundation for creating Flight servers that can
@@ -30,7 +30,7 @@ class Server(fl.FlightServerBase, ABC):
     """
 
     def __init__(
-        self, host: str = "127.0.0.1", port: int = 8080, logger: logging.Logger | None = None, **kwargs
+        self, host: str = "127.0.0.1", port: int = 8080, logger: logging.Logger | None = None, **kwargs: object
     ) -> None:
         """Initialize the server with the provided host and port, and optionally a logger.
 
@@ -43,7 +43,7 @@ class Server(fl.FlightServerBase, ABC):
         uri = f"grpc://{host}:{port}"
         super().__init__(uri, **kwargs)
         self._logger = logger or logging.getLogger(__name__)
-        self._storage = {}  # Dictionary to store uploaded data
+        self._storage: dict[str, object] = {}  # Dictionary to store uploaded data
         self._lock = threading.Lock()  # Lock for thread safety
 
     @property
@@ -65,7 +65,7 @@ class Server(fl.FlightServerBase, ABC):
         Returns:
             The command string extracted from the ticket.
         """
-        return ticket.ticket.decode("utf-8")
+        return ticket.ticket.decode("utf-8")  # type: ignore[no-any-return]
 
     def do_put(
         self,
@@ -147,7 +147,7 @@ class Server(fl.FlightServerBase, ABC):
 
     @classmethod
     def start(
-        cls, host: str = "127.0.0.1", port: int = 8080, logger: logging.Logger | None = None, **kwargs
+        cls, host: str = "127.0.0.1", port: int = 8080, logger: logging.Logger | None = None, **kwargs: object
     ) -> "Server":  # pragma: no cover
         """Create and start a server instance.
 

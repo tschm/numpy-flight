@@ -44,3 +44,8 @@ loguru = "loguru"
 marimo = "marimo"
 plotly = "plotly"
 pandas = "pandas"
+
+[tool.mypy]
+ignore_missing_imports = true
+disallow_subclassing_any = false
+warn_return_any = false

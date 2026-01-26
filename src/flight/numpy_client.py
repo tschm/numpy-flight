@@ -23,7 +23,7 @@ class Client:
         _client (fl.FlightClient): The underlying Flight client for network communication.
     """
 
-    def __init__(self, location: str, **kwargs) -> None:
+    def __init__(self, location: str, **kwargs: object) -> None:
         """Initialize the NumpyClient with a Flight server location.
 
         Args:
