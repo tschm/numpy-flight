@@ -36,3 +36,11 @@ include = [
     "README.md",
     "src/flight"
 ]
+
+[tool.deptry.package_module_name_map]
+numpy = "numpy"
+pyarrow = "pyarrow"
+loguru = "loguru"
+marimo = "marimo"
+plotly = "plotly"
+pandas = "pandas"

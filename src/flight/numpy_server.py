@@ -127,7 +127,7 @@ class Server(fl.FlightServerBase, ABC):
 
         # Retrieve the stored table
         if command not in self._storage:
-            raise fl.FlightServerError(f"No data found for command: {command}")
+            raise fl.FlightServerError(command)
 
         table = self._storage[command]
         self.logger.info(f"Retrieved data for command: {command}")

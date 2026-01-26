@@ -100,13 +100,15 @@ class Client:
 
         # check if the dictionary is empty
         if not data:
-            raise ValueError("Data cannot be converted to an Arrow Table.")
+            msg = "Empty data"
+            raise ValueError(msg)
 
         # Convert NumPy arrays to Arrow Table
         table = np_2_pa(data)
 
         if table.num_rows == 0:
-            raise TypeError("The data cannot be converted to an Arrow Table.")
+            msg = "Empty table"
+            raise TypeError(msg)
 
         # Initialize the write operation with the server
         writer, _ = self.flight.do_put(descriptor, table.schema)
