@@ -2,7 +2,6 @@ template-repository: jebel-quant/rhiza
 template-branch: main
 include:
   - .github
-  - tests
   - .editorconfig
   - .gitignore
   - .pre-commit-config.yaml
@@ -17,5 +16,3 @@ include:
 exclude:
   - .github/workflows/rhiza_docker.yml
   - .github/workflows/rhiza_devcontainer.yml
-  - .tests/test_rhiza
-
