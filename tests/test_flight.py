@@ -184,7 +184,7 @@ class TestServerInit:
 
     def test_server_init_custom_host_port(self):
         """Test Server initialization with custom host and port."""
-        server = EchoServer(host="0.0.0.0", port=9090)
+        server = EchoServer(host="127.0.0.1", port=9090)
         assert server.logger is not None
         server.shutdown()
 
@@ -288,9 +288,8 @@ class TestClientWriteValidation:
     def test_write_empty_dict_raises_value_error(self, server_and_client):
         """Test that write raises ValueError for empty data."""
         _, location = server_and_client
-        with Client(location) as client:
-            with pytest.raises(ValueError, match="Empty data"):
-                client.write("test", {})
+        with Client(location) as client, pytest.raises(ValueError, match="Empty data"):
+            client.write("test", {})
 
     def test_write_empty_array_succeeds(self, server_and_client):
         """Test that write with empty array succeeds (creates table with 1 row)."""
@@ -356,9 +355,8 @@ class TestServerDoGetError:
     def test_get_nonexistent_command_raises_error(self, server_and_client):
         """Test that getting non-existent data raises an error."""
         _, location = server_and_client
-        with Client(location) as client:
-            with pytest.raises(fl.FlightServerError):
-                client.get("nonexistent_command")
+        with Client(location) as client, pytest.raises(fl.FlightServerError):
+            client.get("nonexistent_command")
 
 
 class TestServerDoPutDirect:
